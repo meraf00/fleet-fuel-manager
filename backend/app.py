@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 from db import db
 from auth import auth_bp, login_required
+from fuel_tracking import fuel_bp
+from file import file_bp
 
 load_dotenv()
 
@@ -15,6 +17,8 @@ db.init_app(app)
 
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(fuel_bp, url_prefix="/fuel")
+app.register_blueprint(file_bp, url_prefix="/file")
 
 
 @app.route("/api", methods=["POST"])
