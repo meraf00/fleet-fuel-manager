@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fuel_tracker/presentation/screens/login_screen.dart';
 
 import 'presentation/screens/home_screen.dart';
+import 'presentation/screens/my_activity_screen.dart';
+import 'presentation/screens/register_screen.dart';
 import 'theme/app_theme.dart';
 import 'injection_container.dart' as di;
 
@@ -27,8 +30,9 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const HomeScreen(),
-          '/login': (context) => const HomeScreen(),
-          '/fuel-tracking': (context) => const HomeScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/register': (context) => const RegisterScreen(),
+          '/fuel-tracking': (context) => const ReportListScreen(),
         },
       ),
     );

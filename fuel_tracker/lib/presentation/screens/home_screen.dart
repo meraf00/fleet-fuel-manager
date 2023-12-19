@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_tracker/features/auth/repository.dart';
 import '../../injection_container.dart' as di;
+import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (isLoggedIn) {
         Navigator.pushReplacementNamed(context, '/fuel-tracking');
       } else {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacementNamed(context, '/register');
       }
     });
   }
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Image.asset('assets/images/splashscreen.png'),
       ),
