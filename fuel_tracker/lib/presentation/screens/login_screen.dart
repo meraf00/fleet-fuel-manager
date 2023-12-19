@@ -25,37 +25,34 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //
-                  Text(
-                    "Welcome to Fuel Tracker",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  SizedBox(height: 40.h),
-
-                  //
-                  //
-                  CustomTextFormField(
-                    controller: TextEditingController(),
-                    labelText: 'Email',
-                  ),
-                  //
-                  CustomTextFormField(
-                    controller: TextEditingController(),
-                    labelText: 'Password',
-                  ),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/fuel-tracking');
-                    },
-                    child: const Text('Login'),
-                  ),
-                ],
+              //
+              Text(
+                "Welcome to Fuel Tracker",
+                style: Theme.of(context).textTheme.titleLarge,
               ),
+              SizedBox(height: 40.h),
+
+              //
+              //
+              CustomTextFormField(
+                controller: TextEditingController(),
+                labelText: 'Email',
+              ),
+              //
+              CustomTextFormField(
+                controller: TextEditingController(),
+                labelText: 'Password',
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/fuel-tracking');
+                },
+                child: const Text('Login'),
+              ),
+
               SizedBox(height: 90.h),
               const Divider(
                 color: AppColors.gray200,

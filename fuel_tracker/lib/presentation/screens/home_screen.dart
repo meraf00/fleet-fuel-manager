@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_tracker/features/auth/repository.dart';
 import '../../injection_container.dart' as di;
-import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

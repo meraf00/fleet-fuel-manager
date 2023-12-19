@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fuel_tracker/presentation/screens/login_screen.dart';
 
 import 'presentation/screens/home_screen.dart';
-import 'presentation/screens/my_activity_screen.dart';
+import 'presentation/screens/report_detail.dart';
+import 'presentation/screens/reports_screen.dart';
 import 'presentation/screens/register_screen.dart';
 import 'theme/app_theme.dart';
 import 'injection_container.dart' as di;
