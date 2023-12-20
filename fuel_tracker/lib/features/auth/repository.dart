@@ -47,9 +47,10 @@ class AuthenticationRepository {
   Future<bool> register(
       String firstName, String lastName, String email, String password) async {
     final response = await client.post(Uri.parse('$baseUrl/auth/register'),
+        headers: {"content-type": "application/json"},
         body: jsonEncode({
-          'firstName': firstName,
-          'lastName': lastName,
+          'firstname': firstName,
+          'lastname': lastName,
           'email': email,
           'password': password,
         }));
@@ -58,6 +59,7 @@ class AuthenticationRepository {
       await login(email, password);
       return true;
     } else {
+      print(response.body);
       return false;
     }
   }

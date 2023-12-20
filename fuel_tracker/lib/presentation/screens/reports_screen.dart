@@ -41,38 +41,41 @@ class _ReportListScreenState extends State<ReportListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Recent Reports")),
-      body: ListView.builder(
-          itemCount: reports.length,
-          itemBuilder: (context, index) {
-            final tracking = reports[index];
+      body: reports.isEmpty
+          ? const Center(child: Text("You don't have any refills!"))
+          : ListView.builder(
+              itemCount: reports.length,
+              itemBuilder: (context, index) {
+                final tracking = reports[index];
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ReportDetailScreen(tracking, authToken)));
-              },
-              child: ListTile(
-                title: Text('${tracking.odometerReading} KM',
-                    style: Theme.of(context).textTheme.displayMedium),
-                subtitle: Text("${tracking.latitude} ${tracking.longitude}",
-                    style: Theme.of(context).textTheme.bodySmall),
-                leading: SizedBox(
-                  width: 50.w,
-                  height: 50.h,
-                  child: CachedNetworkImage(
-                      imageUrl: tracking.odometerImage,
-                      httpHeaders: {'token': authToken}),
-                ),
-                trailing: const Icon(Icons.arrow_forward),
-              ),
-            );
-          }),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ReportDetailScreen(tracking, authToken)));
+                  },
+                  child: ListTile(
+                    title: Text('${tracking.odometerReading} KM',
+                        style: Theme.of(context).textTheme.displayMedium),
+                    subtitle: Text("${tracking.latitude} ${tracking.longitude}",
+                        style: Theme.of(context).textTheme.bodySmall),
+                    leading: SizedBox(
+                      width: 50.w,
+                      height: 50.h,
+                      child: CachedNetworkImage(
+                          imageUrl: tracking.odometerImage,
+                          httpHeaders: {'token': authToken}),
+                    ),
+                    trailing: const Icon(Icons.arrow_forward),
+                  ),
+                );
+              }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/add-report');
+        onPressed: () async {
+          await Navigator.of(context).pushNamed('/add-report');
+          await loadReports();
         },
         child: const Icon(Icons.add),
       ),

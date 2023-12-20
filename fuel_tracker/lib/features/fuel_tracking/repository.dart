@@ -35,7 +35,7 @@ class FuelTrackingRepository {
     }
   }
 
-  Future<void> createFuelTracking(FuelTracking fuelTracking) async {
+  Future<bool> createFuelTracking(FuelTracking fuelTracking) async {
     if (await authRepo.isLoggedIn() == false) {
       throw Exception('User is not logged in');
     }
@@ -53,9 +53,11 @@ class FuelTrackingRepository {
 
     final response = await request.send();
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
+      return true;
     } else {
-      throw Exception('Failed to create fuel tracking');
+      print(await response.stream.bytesToString());
+      return false;
     }
   }
 

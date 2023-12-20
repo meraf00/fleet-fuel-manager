@@ -44,69 +44,100 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //
-              Text(
-                "Welcome to Fuel Tracker",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: 40.h),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //
+                Text(
+                  "Welcome to Fuel Tracker",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(height: 40.h),
 
-              //
-              //
-              CustomTextFormField(
-                controller: _fnameController,
-                labelText: 'First name',
-              ),
-              //
-              CustomTextFormField(
-                controller: _lnameController,
-                labelText: 'Last name',
-              ),
-              //
-              CustomTextFormField(
-                controller: _emailController,
-                labelText: 'Email',
-              ),
-              //
-              CustomTextFormField(
-                controller: _passwordController,
-                labelText: 'Password',
-              ),
+                //
+                //
+                CustomTextFormField(
+                  controller: _fnameController,
+                  labelText: 'First name',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your first name';
+                    }
+                    return null;
+                  },
+                ),
+                //
+                CustomTextFormField(
+                  controller: _lnameController,
+                  labelText: 'Last name',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your last name';
+                    }
+                    return null;
+                  },
+                ),
+                //
+                CustomTextFormField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                //
+                CustomTextFormField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ),
 
-              ElevatedButton(
-                onPressed: () {
-                  _register(context);
-                },
-                child: const Text('Register'),
-              ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _register(context);
+                    }
+                  },
+                  child: const Text('Register'),
+                ),
 
-              SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
 
-              const Divider(
-                color: AppColors.gray200,
-              ),
+                const Divider(
+                  color: AppColors.gray200,
+                ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("Already have an account?"),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: const Text('Login',
-                        style: TextStyle(color: AppColors.blue)),
-                  ),
-                ],
-              ),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account?"),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: const Text('Login',
+                          style: TextStyle(color: AppColors.blue)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
