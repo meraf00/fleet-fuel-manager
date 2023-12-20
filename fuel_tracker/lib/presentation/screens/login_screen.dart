@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fuel_tracker/features/auth/repository.dart';
 import 'package:fuel_tracker/presentation/widgets/custom_text_field.dart';
+import 'package:fuel_tracker/injection_container.dart' as di;
 
 import '../../theme/app_colors.dart';
 
@@ -14,8 +16,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  void _login() {
-    Navigator.pushNamed(context, '/fuel-tracking');
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> _login(context) async {
+    final authRepo = di.serviceLocator<AuthenticationRepository>();
+    final isLoggedIn = await authRepo.login(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    if (isLoggedIn) {
+      Navigator.pushNamed(context, '/fuel-tracking');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid email or password'),
+        ),
+      );
+    }
   }
 
   @override
@@ -24,57 +45,76 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //
-              Text(
-                "Welcome to Fuel Tracker",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: 40.h),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //
+                Text(
+                  "Welcome to Fuel Tracker",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(height: 40.h),
 
-              //
-              //
-              CustomTextFormField(
-                controller: TextEditingController(),
-                labelText: 'Email',
-              ),
-              //
-              CustomTextFormField(
-                controller: TextEditingController(),
-                labelText: 'Password',
-              ),
+                //
+                //
+                CustomTextFormField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                //
+                CustomTextFormField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ),
 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/fuel-tracking');
-                },
-                child: const Text('Login'),
-              ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _login(context);
+                    }
+                  },
+                  child: const Text('Login'),
+                ),
 
-              SizedBox(height: 90.h),
-              const Divider(
-                color: AppColors.gray200,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("Don't have an account?"),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/register');
-                    },
-                    child: const Text('Register',
-                        style: TextStyle(color: AppColors.blue)),
-                  ),
-                ],
-              ),
-            ],
+                SizedBox(height: 90.h),
+                const Divider(
+                  color: AppColors.gray200,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?"),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: const Text('Register',
+                          style: TextStyle(color: AppColors.blue)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -8,16 +8,19 @@ class CustomTextFormField extends StatelessWidget {
     super.key,
     required TextEditingController controller,
     required this.labelText,
+    this.validator,
   }) : _controller = controller;
 
   final TextEditingController _controller;
   final String labelText;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 66.h,
       child: TextFormField(
+        validator: validator,
         obscureText: labelText == 'Password' ? true : false,
         controller: _controller,
         cursorColor: AppColors.darkBlue,

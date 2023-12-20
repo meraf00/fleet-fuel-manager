@@ -18,8 +18,9 @@ class AuthenticationRepository {
     await sharedPreferences.setString('authToken', authToken);
   }
 
-  Future<void> login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     final response = await client.post(Uri.parse('$baseUrl/auth/login'),
+        headers: {'content-type': 'application/json'},
         body: jsonEncode({
           'email': email,
           'password': password,
@@ -28,8 +29,9 @@ class AuthenticationRepository {
     if (response.statusCode == 200) {
       final authToken = jsonDecode(response.body)['token'];
       await setAuthToken(authToken);
+      return true;
     } else {
-      throw Exception('Failed to login');
+      return false;
     }
   }
 
@@ -42,7 +44,7 @@ class AuthenticationRepository {
     return authToken != null;
   }
 
-  Future<void> register(
+  Future<bool> register(
       String firstName, String lastName, String email, String password) async {
     final response = await client.post(Uri.parse('$baseUrl/auth/register'),
         body: jsonEncode({
@@ -54,8 +56,9 @@ class AuthenticationRepository {
 
     if (response.statusCode == 201) {
       await login(email, password);
+      return true;
     } else {
-      throw Exception('Failed to register');
+      return false;
     }
   }
 }

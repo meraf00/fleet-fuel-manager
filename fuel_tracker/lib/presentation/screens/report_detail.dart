@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fuel_tracker/features/fuel_tracking/fuel_tracking_model.dart';
@@ -5,8 +6,9 @@ import 'package:fuel_tracker/theme/app_colors.dart';
 
 class ReportDetailScreen extends StatelessWidget {
   final FuelTracking tracking;
+  final String authToken;
 
-  const ReportDetailScreen(this.tracking, {super.key});
+  const ReportDetailScreen(this.tracking, this.authToken, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,12 @@ class ReportDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
+            Padding(
+              padding: EdgeInsets.all(20.h),
+              child: CachedNetworkImage(
+                  imageUrl: tracking.odometerImage,
+                  httpHeaders: {'token': authToken}),
+            ),
             Tile(
               title: "Odometer Reading",
               value: tracking.odometerReading,

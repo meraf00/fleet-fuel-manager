@@ -25,10 +25,10 @@ class FuelTrackingRepository {
         .get(Uri.parse('$baseUrl/fuel/'), headers: {'token': authToken!});
 
     if (response.statusCode == 200) {
-      final fuelTrackings =
-          jsonDecode(response.body) as List<Map<String, dynamic>>;
+      final fuelTrackings = jsonDecode(response.body) as List<dynamic>;
       return fuelTrackings
-          .map((fuelTracking) => FuelTracking.fromJson(fuelTracking))
+          .map<FuelTracking>(
+              (fuelTracking) => FuelTracking.fromJson(fuelTracking))
           .toList();
     } else {
       throw Exception('Failed to load fuel trackings');

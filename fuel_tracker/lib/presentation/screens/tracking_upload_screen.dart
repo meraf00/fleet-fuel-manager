@@ -10,6 +10,11 @@ class RefillUploadScreen extends StatefulWidget {
 class _RefillUploadScreenState extends State<RefillUploadScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add report')),
+      body: Column(
+        children: [],
+      ),
+    );
   }
 }
