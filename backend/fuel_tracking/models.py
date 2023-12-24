@@ -8,6 +8,7 @@ class FuelRefill(db.Model):
     longitude = db.Column(db.String(50), nullable=False)
     latitude = db.Column(db.String(50), nullable=False)
     odometer_image = db.Column(db.String(100), nullable=False)
+    recipt_image = db.Column(db.String(100), nullable=False)
     odometer_reading = db.Column(db.String(100), nullable=False)
 
     user_id = db.Column(db.String(36), db.ForeignKey(User.id), nullable=False)
@@ -25,6 +26,7 @@ class FuelRefill(db.Model):
             "longitude": self.longitude,
             "latitude": self.latitude,
             "odometer_image": self.odometer_image,
+            "recipt_image": self.recipt_image,
             "odometer_reading": self.odometer_reading,
             "user_id": self.user_id,
         }

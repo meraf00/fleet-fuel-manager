@@ -16,6 +16,9 @@ fuel_bp = Blueprint("refill", __name__)
 def create_refill(current_user: User):
     if "odometer_image" not in request.files:
         return jsonify({"error": "Missing odometer image"}), 400
+    
+    if "recipt_image" not in request.files:
+        return jsonify({"error": "Missing receipt image"}), 400
 
     fields = ["odometer_reading", "longitude", "latitude"]
 
@@ -27,9 +30,15 @@ def create_refill(current_user: User):
     filename = secure_filename(file.filename)
     filename = f"{uuid4()}_{filename}"
 
+    recipt_file = request.files["recipt_image"]
+    recipt_image_filename = secure_filename(recipt_file.filename)
+    recipt_image_filename = f"{uuid4()}_{recipt_image_filename}"
+
     path = os.path.join(os.getenv("UPLOAD_PATH"), filename)
+    recipt_file_path = os.path.join(os.getenv("UPLOAD_PATH"), recipt_image_filename)
 
     file.save(path)
+    recipt_file.save(recipt_file_path)
 
     refill = FuelRefill(
         user_id=current_user.id,
@@ -37,6 +46,7 @@ def create_refill(current_user: User):
         longitude=request.form["longitude"],
         latitude=request.form["latitude"],
         odometer_image=filename,
+        recipt_image=recipt_image_filename,
     )
 
     try:
@@ -56,5 +66,6 @@ def get_refills(current_user: User):
 
     for refill in refills:
         refill["odometer_image"] = url_for('file.download_file', filename=refill['odometer_image'], _external=True)
+        refill["recipt_image"] = url_for('file.download_file', filename=refill['recipt_image'], _external=True)
 
     return jsonify(refills), 200
